@@ -7,20 +7,22 @@
 
 namespace TMCatalog.ViewModel
 {
-  using TMCatalog.Common.MVVM;
+    using System.Collections.Generic;
+    using TMCatalog.Common.MVVM;
   using TMCatalog.Logic;
+    using TMCatalog.ViewModel.UserControlls;
+    using TMCatalogClient.Model;
 
-  public class MainWindowViewModel : ViewModelBase
-   {
-
-    public static CatalogController CatalogController;
-
-    public MainWindowViewModel()
+    public class MainWindowViewModel : ViewModelBase
     {
-      CatalogController = new CatalogController();
-      this.CloseCommand = new RelayCommand(this.CloseCommandExecute);
-    }
 
+        public MainWindowViewModel()
+        {
+            this.CloseCommand = new RelayCommand(this.CloseCommandExecute);
+            this.VehicleSearchVM = new VehicleSearchVM();
+        }
+
+        public VehicleSearchVM VehicleSearchVM { get; }
     public RelayCommand CloseCommand { get; set; }
 
     public void CloseCommandExecute()

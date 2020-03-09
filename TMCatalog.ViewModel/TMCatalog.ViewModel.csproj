@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControlls\VehicleSearchVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TMCatalog.Common\TMCatalog.Common.csproj">
