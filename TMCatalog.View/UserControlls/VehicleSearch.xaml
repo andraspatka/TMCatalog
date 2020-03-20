@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TMCatalog.View.UserControlls"
+             xmlns:converters="clr-namespace:TMCatalog.Common.Converters;assembly=TMCatalog.Common"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -19,6 +23,38 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Manufacturer"></Label>
-        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" ItemsSource="{Binding Manufacturers}"></ComboBox>
+        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" 
+                  ItemsSource="{Binding Manufacturers}" 
+                  SelectedValue ="{Binding ManufacturerId, Mode=TwoWay}" 
+                  SelectedValuePath="Id"
+                  DisplayMemberPath="Description"></ComboBox>
+        
+        <Label Grid.Row="1" Grid.Column="1" Content="Model"></Label>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" 
+                  ItemsSource="{Binding Models}" 
+                  SelectedValue="{Binding ModelId}"
+                  SelectedValuePath="Id"
+                  DisplayMemberPath="Description"></ComboBox>
+
+        <DataGrid Grid.Row="2"
+                  Grid.ColumnSpan="3"
+                  Margin="5"
+                  ItemsSource="{Binding VehicleList}"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Manufacturer" Width="2*" Binding="{Binding Model.Manufacturer.Description}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Model" Width="2*" Binding="{Binding Model.Description}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Width="3*" Binding="{Binding Description}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Fuel" Width="60" Binding="{Binding FuelType.Description}"></DataGridTextColumn>
+                <DataGridTextColumn Header="From" Width="40" Binding="{Binding ProductionYearFrom}"></DataGridTextColumn>
+                <DataGridTextColumn Header="To" Width="40" Binding="{Binding ProductionYearTo}"></DataGridTextColumn>
+            </DataGrid.Columns>
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource DataGridRowNumberConverter}}"></TextBlock>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+        </DataGrid>
     </Grid>
 </UserControl>

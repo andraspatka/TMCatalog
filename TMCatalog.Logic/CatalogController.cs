@@ -25,5 +25,20 @@ namespace TMCatalog.Logic
         {
             return this.catalogDatabase.Manufacturer.ToList();
         }
+        public List<Model> GetModels(int manufacturerId)
+        {
+            return this.catalogDatabase.Models.Where(x => x.ManufacturerId == manufacturerId).ToList();
+        }
+
+        public List<VehicleType> GetVehicleTypes(int modelId)
+        {
+            return this.catalogDatabase.VehicleTypes.
+                Include("Model").Include("Model.Manufacturer").Include("FuelType").
+                Where(x => x.ModelId == modelId).
+                OrderBy(m => m.Model.Manufacturer.Description).
+                ThenBy(m => m.Model.Description).
+                ThenBy(m => m.Description).
+                ToList();
+        }
     }
 }
