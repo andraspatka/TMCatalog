@@ -40,5 +40,22 @@ namespace TMCatalog.Logic
                 ThenBy(m => m.Description).
                 ToList();
         }
+
+        public List<Product> GetProducts(int vehicleTypeId)
+        {
+            return this.catalogDatabase.VehicleTypeProducts.
+                Where(vt => vt.VehicleTypeId == vehicleTypeId).
+                Select(p => p.Product).
+                ToList();
+        }
+
+        public List<Product> GetProductsV2(int vehicleTypeId)
+        {
+            List<Product> products = (from p in this.catalogDatabase.Products
+                                      join v in this.catalogDatabase.VehicleTypeProducts on p.Id equals v.ProductId
+                                      where v.VehicleTypeId == vehicleTypeId
+                                      select p).ToList();
+            return products;
+        }
     }
 }

@@ -17,10 +17,12 @@ namespace TMCatalog.ViewModel.UserControlls
         private int manufacturerID;
         private int modelId;
         private List<VehicleType> vehicleList;
+        private VehicleType selectedVehicle;
         public VehicleSearchVM()
         {
             this.Manufacturers = Data.Catalog.GetManufacturers();
             this.ManufacturerId = this.Manufacturers?.FirstOrDefault()?.Id ?? -1;
+            this.OpenArticleTabCommand = new RelayCommand(this.OpenArticleTabExecute);
         }
 
         public List<Manufacturer> Manufacturers
@@ -86,6 +88,33 @@ namespace TMCatalog.ViewModel.UserControlls
             {
                 this.vehicleList = value;
                 this.RaisePropertyChanged();
+            }
+        }
+
+        public RelayCommand OpenArticleTabCommand
+        {
+            get;
+            private set;
+        }
+
+        public VehicleType SelectedVehicle
+        {
+            get
+            {
+                return this.selectedVehicle;
+            }
+            set
+            {
+                this.selectedVehicle = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        private void OpenArticleTabExecute()
+        {
+            if (this.SelectedVehicle != null)
+            {
+                MainWindowViewModel.Instance.SetAndOpenArticle(this.SelectedVehicle);
             }
         }
     }

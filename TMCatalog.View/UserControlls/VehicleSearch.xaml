@@ -28,7 +28,7 @@
                   SelectedValue ="{Binding ManufacturerId, Mode=TwoWay}" 
                   SelectedValuePath="Id"
                   DisplayMemberPath="Description"></ComboBox>
-        
+
         <Label Grid.Row="1" Grid.Column="1" Content="Model"></Label>
         <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" 
                   ItemsSource="{Binding Models}" 
@@ -40,8 +40,12 @@
                   Grid.ColumnSpan="3"
                   Margin="5"
                   ItemsSource="{Binding VehicleList}"
+                  SelectedItem="{Binding SelectedVehicle}"
                   IsReadOnly="True"
                   AutoGenerateColumns="False">
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OpenArticleTabCommand}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Manufacturer" Width="2*" Binding="{Binding Model.Manufacturer.Description}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Model" Width="2*" Binding="{Binding Model.Description}"></DataGridTextColumn>

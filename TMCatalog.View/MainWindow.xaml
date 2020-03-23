@@ -17,19 +17,26 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="0">
+        <TabControl Grid.Row="0" 
+                    SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
             <TabItem Header="Vehicle Search">
                 <TabItem.ContentTemplate>
                     <DataTemplate>
                         <controls:VehicleSearch DataContext="{Binding DataContext.VehicleSearchVM, 
-                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}
-                            }}"/>
+                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                     </DataTemplate>
                 </TabItem.ContentTemplate>
             </TabItem>
-            <TabItem Header="Article"/>
+            <TabItem Header="Article">
+                <TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <controls:Article DataContext="{Binding DataContext.ArticleVM, 
+                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    </DataTemplate>
+                </TabItem.ContentTemplate>
+            </TabItem>
         </TabControl>
-       
+
         <Button Grid.Row="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
