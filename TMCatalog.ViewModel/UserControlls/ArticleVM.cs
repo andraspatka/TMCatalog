@@ -13,7 +13,10 @@ namespace TMCatalog.ViewModel.UserControlls
     {
         private string selectedVehicleDescription;
         private VehicleType vehicleType;
-        private List<Product> products;
+        private List<ProductGroup> productGroups;
+        private object selectedTreeViewItem;
+
+
         public ArticleVM()
         {
         }
@@ -30,7 +33,7 @@ namespace TMCatalog.ViewModel.UserControlls
                 this.SelectedVehicleDescription = $"{this.vehicleType.Model.Manufacturer.Description} - " +
                     $"{this.vehicleType.Model.Description} - {this.vehicleType.Description}";
 
-                this.Products = Data.Catalog.GetProductsV2(this.vehicleType.Id);
+                this.ProductGroups = Data.Catalog.GetProductGroups(this.vehicleType.Id);
 
             }
         }
@@ -48,17 +51,32 @@ namespace TMCatalog.ViewModel.UserControlls
             }
         }
 
-        public List<Product> Products
+        public List<ProductGroup> ProductGroups
         {
             get
             {
-                return this.products;
+                return this.productGroups;
             }
-
             set
             {
-                this.products = value;
+                this.productGroups = value;
                 this.RaisePropertyChanged();
+            }
+        }
+
+        public object SelectedTreeViewItem
+        {
+            get
+            {
+                return this.selectedTreeViewItem;
+            }
+            set
+            {
+                if (value is Product)
+                {
+                    this.selectedTreeViewItem = SelectedTreeViewItem;
+                    this.RaisePropertyChanged();
+                }
             }
         }
     }

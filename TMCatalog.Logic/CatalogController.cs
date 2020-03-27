@@ -12,6 +12,8 @@ namespace TMCatalog.Logic
     using TMCatalog.Model.DBContext;
     using TMCatalogClient.Model;
 
+    using System.Data.Entity;
+
     public class CatalogController
     {
         private TMCatalogDB catalogDatabase;
@@ -26,18 +28,20 @@ namespace TMCatalog.Logic
             return this.catalogDatabase.Manufacturer.ToList();
         }
         public List<Model> GetModels(int manufacturerId)
-        {
-            return this.catalogDatabase.Models.Where(x => x.ManufacturerId == manufacturerId).ToList();
+        { // FIXME: Solution 1
+            return this.catalogDatabase.Models.Where(x => x.ManufacturerId == manufacturerId)/*.AsNoTracking()*/.ToList();
         }
 
         public List<VehicleType> GetVehicleTypes(int modelId)
-        {
+        { // FIXME: Solution 2
+            //this.catalogDatabase = new TMCatalogDB();
             return this.catalogDatabase.VehicleTypes.
-                Include("Model").Include("Model.Manufacturer").Include("FuelType").
+                /*Include("Model").Include("Model.Manufacturer").*/Include("FuelType").
                 Where(x => x.ModelId == modelId).
                 OrderBy(m => m.Model.Manufacturer.Description).
                 ThenBy(m => m.Model.Description).
                 ThenBy(m => m.Description).
+                /*AsNoTracking().*/ //FIXME: Solution 3
                 ToList();
         }
 
@@ -56,6 +60,32 @@ namespace TMCatalog.Logic
                                       where v.VehicleTypeId == vehicleTypeId
                                       select p).ToList();
             return products;
+        }
+
+        public List<ProductGroup> GetProductGroups(int vehicleType)
+        {
+            IEnumerable<VehicleTypeProducts> vehicleTypeProducts = this.catalogDatabase.VehicleTypeProducts.
+                Include("Product").Include("Product.ProductGroup").
+                Where(v => v.VehicleTypeId == vehicleType);
+
+            List<ProductGroup> productGroups = new List<ProductGroup>();
+
+            if (vehicleTypeProducts.Count() > 0)
+            {
+                foreach (IGrouping<ProductGroup, VehicleTypeProducts> item in vehicleTypeProducts.GroupBy(p => p.Product.ProductGroup))
+                {
+                    ProductGroup productGroup = item.Key;
+                    productGroup.Products = new List<Product>();
+
+                    foreach (VehicleTypeProducts vtp in item)
+                    {
+                        productGroup.Products.Add(vtp.Product);
+                    }
+                    productGroups.Add(productGroup);
+                }
+            }
+
+            return productGroups;
         }
     }
 }
