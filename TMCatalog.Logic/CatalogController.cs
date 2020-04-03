@@ -87,5 +87,18 @@ namespace TMCatalog.Logic
 
             return productGroups;
         }
+
+        public List<Article> GetArticles(int vehicleTypeId, int productId)
+        {
+            return this.catalogDatabase.VehicleTypeArticles.
+                Include("Article").Include("Article.Product").
+                Where(vta => vta.VehicleTypeId == vehicleTypeId && vta.Article.ProductId == productId).
+                Select(a => a.Article).ToList();
+        }
+
+        public Stock GetArticleStock(int articleId)
+        {
+            return this.catalogDatabase.Stocks.FirstOrDefault(s => s.ArticleId == articleId);
+        }
     }
 }

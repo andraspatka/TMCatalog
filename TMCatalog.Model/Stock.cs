@@ -8,11 +8,12 @@
 namespace TMCatalogClient.Model
 {
   using System.ComponentModel.DataAnnotations;
+    using TMCatalog.Common.Interfaces;
 
-  /// <summary>
-  /// Stock
-  /// </summary>
-  public class Stock
+    /// <summary>
+    /// Stock
+    /// </summary>
+    public class Stock : IStock
   {
     [Key]
     public int ArticleId { get; set; }

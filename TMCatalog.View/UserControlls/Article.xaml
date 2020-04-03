@@ -7,8 +7,13 @@
              xmlns:helpers="clr-namespace:TMCatalog.Common.Helpers;assembly=TMCatalog.Common"
              xmlns:behaviors="clr-namespace:TMCatalog.Common.Behaviors;assembly=TMCatalog.Common"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converters="clr-namespace:TMCatalog.Common.Converters;assembly=TMCatalog.Common"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:ArticleStockConverter x:Key="ArticleStockConverter"/>
+        <converters:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -42,14 +47,59 @@
 
         </TreeView>
 
-        <DataGrid Grid.Row="1"
-                  Grid.Column="1"
-                  IsReadOnly="False"
-                  AutoGenerateColumns="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}"></DataGridTextColumn>
-            </DataGrid.Columns>
+        <Grid Grid.Row="1"
+                  Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*">
+                    
+                </RowDefinition>
+                <RowDefinition Height="Auto">
+                    
+                </RowDefinition>
+            </Grid.RowDefinitions>
 
-        </DataGrid>
+            <DataGrid 
+                Grid.Row="0"
+                IsReadOnly="False"
+                AutoGenerateColumns="False"
+                ItemsSource="{Binding Articles}"
+                SelectedItem="{Binding SelectedArticle}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Product" Width="2*" Binding="{Binding Product.Description}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Article Number" Width="2*" Binding="{Binding ArticleNumber}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Description" Width="3*" Binding="{Binding Description}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Availability" Width="*">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource ArticleStockConverter}" ConverterParameter="Quantity">
+                                <Binding Path="Id"/>
+                                <Binding Path="DataContext.StockDictionary" 
+                                     RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}"/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Price" Width="*">
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding Converter="{StaticResource ArticleStockConverter}" ConverterParameter="Price">
+                                <Binding Path="Id"/>
+                                <Binding Path="DataContext.StockDictionary" 
+                                     RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}"/>
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+
+                <DataGrid.RowHeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Converter={StaticResource DataGridRowNumberConverter}}"></TextBlock>
+                    </DataTemplate>
+                </DataGrid.RowHeaderTemplate>
+
+            </DataGrid>
+
+            <Button Grid.Row="1"
+                    HorizontalAlignment="Right"
+                     Content="Add to Basket"
+                     Command="{Binding AddToBasketCommand}"></Button>
+        </Grid>
     </Grid>
 </UserControl>

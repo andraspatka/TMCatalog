@@ -55,9 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Converters\ArticleStockConverter.cs" />
     <Compile Include="Converters\DataGridRowNumberConverter.cs" />
     <Compile Include="Helpers\ProductBase.cs" />
     <Compile Include="Helpers\ProductGroupBase.cs" />
+    <Compile Include="Interfaces\IStock.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
     <Compile Include="MVVM\ViewModelBase.cs" />
     <Compile Include="MVVM\ViewService.cs" />
