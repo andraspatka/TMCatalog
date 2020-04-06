@@ -151,7 +151,9 @@ namespace TMCatalog.ViewModel.UserControlls
 
         private void AddToBasketExecute()
         {
-
+            Stock stock = this.StockDictionary[this.SelectedArticle.Id] as Stock;
+            stock.Article = this.SelectedArticle;
+            MainWindowViewModel.Instance.AddStockWithArticleToBasket(stock);
         }
 
         private bool AddToBasketCanExecute()

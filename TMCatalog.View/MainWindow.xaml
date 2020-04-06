@@ -35,6 +35,17 @@
                     </DataTemplate>
                 </TabItem.ContentTemplate>
             </TabItem>
+            <TabItem Header="Shopping basket">
+                <TabItem.ContentTemplate>
+                    <DataTemplate>
+                        <controls:ShoppingBasket DataContext="{Binding DataContext.ShoppingBasketVM, 
+                            RelativeSource={RelativeSource FindAncestor, 
+                            AncestorType={x:Type Window}}}">
+                            
+                        </controls:ShoppingBasket>
+                    </DataTemplate>
+                </TabItem.ContentTemplate>
+            </TabItem>
         </TabControl>
 
         <Button Grid.Row="1"

@@ -15,7 +15,7 @@ namespace TMCatalog.ViewModel.UserControlls
         private List<Manufacturer> manufacturers;
         private List<TMCatalogClient.Model.Model> models;
         private int manufacturerID;
-        private int modelId;
+        private int? modelId;
         private List<VehicleType> vehicleList;
         private VehicleType selectedVehicle;
         public VehicleSearchVM()
@@ -47,7 +47,9 @@ namespace TMCatalog.ViewModel.UserControlls
             {
                 this.manufacturerID = value;
                 this.RaisePropertyChanged();
+                this.ModelId = null; 
                 this.Models = Data.Catalog.GetModels(this.manufacturerID);
+                this.VehicleList = new List<VehicleType>();
             }
         }
         public List<TMCatalogClient.Model.Model> Models
@@ -63,7 +65,7 @@ namespace TMCatalog.ViewModel.UserControlls
             }
         }
 
-        public int ModelId
+        public int? ModelId
         {
             get
             {
@@ -73,7 +75,11 @@ namespace TMCatalog.ViewModel.UserControlls
             {
                 this.modelId = value;
                 this.RaisePropertyChanged();
-                this.VehicleList = Data.Catalog.GetVehicleTypes(this.modelId);
+
+                if (this.modelId.HasValue)
+                {
+                    this.VehicleList = Data.Catalog.GetVehicleTypes(this.modelId.Value);
+                }
             }
         }
 

@@ -48,6 +48,7 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControlls\ArticleVM.cs" />
+    <Compile Include="UserControlls\ShoppingBasketVM.cs" />
     <Compile Include="UserControlls\VehicleSearchVM.cs" />
   </ItemGroup>
   <ItemGroup>
